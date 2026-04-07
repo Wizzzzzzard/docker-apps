@@ -1,0 +1,124 @@
+services:
+  qbittorrent:
+    container_name: qbittorrent
+    hostname: qbittorent.internal
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+      - TZ=Europe/London
+    image: lscr.io/linuxserver/qbittorrent:latest
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8080:8080
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker/appdata/qbittorrent:/config
+      - /data/torrents:/data/torrents
+  radarr:
+    container_name: radarr
+    hostname: radarr.internal
+    image: ghcr.io/hotio/radarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    ports:
+      - 7878:7878
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker/appdata/radarr:/config
+      - /data:/data
+  sonarr:
+    container_name: sonarr
+    hostname: sonarr.internal
+    image: ghcr.io/hotio/sonarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    ports:
+      - 8989:8989
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker/appdata/sonarr:/config
+      - /data:/data
+  bazarr:
+    container_name: bazarr
+    hostname: bazarr.internal
+    image: ghcr.io/hotio/bazarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    ports:
+      - 6767:6767
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker/appdata/bazarr:/config
+      - /data/media:/data/media
+  prowlarr:
+    container_name: prowlarr
+    hostname: prowlarr.internal
+    image: lscr.io/linuxserver/prowlarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    ports:
+      - 9696:9696
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker/appdata/prowlarr:/config
+  plex:
+    container_name: plex
+    image: ghcr.io/hotio/plex
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: host
+    # ports:
+    #   - 32400:32400
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - WEBUI_PORTS=32400/tcp
+      - VERSION=docker
+      - PLEX_CLAIM_TOKEN=claim-7u2-yYooYqBH7WWpV7N8
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker/appdata/plex:/config
+      - /data/media/tv:/tv
+      - /data/media/movies:/movies
+  seerr:
+    container_name: seerr
+    hostname: seerr.internal
+    image: ghcr.io/hotio/seerr
+    ports:
+      - "5055:5055"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Europe/London
+      - WEBUI_PORTS=5055/tcp
+    volumes:
+      - /docker/appdata/seerr:/config
