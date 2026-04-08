@@ -122,3 +122,18 @@ services:
       - WEBUI_PORTS=5055/tcp
     volumes:
       - /docker/appdata/seerr:/config
+  heimdall:
+    container_name: heimdall
+    image: lscr.io/linuxserver/heimdall:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - ALLOW_INTERNAL_REQUESTS=true #optional
+    volumes:
+      - /docker/appdata/heimdall:/config
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+
