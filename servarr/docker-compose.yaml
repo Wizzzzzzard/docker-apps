@@ -54,6 +54,25 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/sonarr:/config
       - /data:/data
+  lidarr:
+    container_name: lidarr
+    hostname: lidarr.internal
+    image: ghcr.io/hotio/lidarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    ports:
+      - 8686:8686
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - UMASK=002
+      - WEBUI_PORTS=8686/tcp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker/appdata/lidarr:/config
+      - /data:/data
   bazarr:
     container_name: bazarr
     hostname: bazarr.internal
@@ -94,23 +113,23 @@ services:
     logging:
       driver: json-file
     network_mode: host
-    # ports:
-    #   - 32400:32400
+    ports:
+      - 32400:32400
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
       - WEBUI_PORTS=32400/tcp
-      - VERSION=docker
+      - VERSION=latest
       - PLEX_CLAIM_TOKEN=claim-7u2-yYooYqBH7WWpV7N8
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/plex:/config
       - /data/media/tv:/tv
       - /data/media/movies:/movies
+      - /data/media/music:/music
   seerr:
     container_name: seerr
-    hostname: seerr.internal
     image: ghcr.io/hotio/seerr
     ports:
       - "5055:5055"
