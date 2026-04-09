@@ -128,6 +128,19 @@ services:
       - /data/media/tv:/tv
       - /data/media/movies:/movies
       - /data/media/music:/music
+  navidrome:
+    container_name: navidrome
+    image: deluan/navidrome:latest
+    ports:
+      - 4533:4533
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /docker/appdata/navidrome:/data
+      - /data/media/music:/music:ro
   seerr:
     container_name: seerr
     image: ghcr.io/hotio/seerr
