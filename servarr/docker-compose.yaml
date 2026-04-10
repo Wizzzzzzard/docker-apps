@@ -146,6 +146,7 @@ services:
     image: ghcr.io/hotio/seerr
     ports:
       - 5055:5055
+    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
