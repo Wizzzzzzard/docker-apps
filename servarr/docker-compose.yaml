@@ -138,6 +138,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
+    env_file:
+      - .env
     volumes:
       - /docker/appdata/navidrome:/data
       - /data/media/music:/music:ro
