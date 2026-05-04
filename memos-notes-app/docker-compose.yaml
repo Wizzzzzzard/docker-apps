@@ -3,23 +3,12 @@ services:
     container_name: memos
     image: neosmemo/memos:stable
     restart: unless-stopped
-    networks:
-      default:
-      proxy_external:
-        aliases:
-          - memos
+    ports:
+      - "5230:5230"
     volumes:
       - /data/notes:/var/opt/memos
     environment:
       - TZ=Europe/London
-    labels:
-      traefik.enable: true
-      traefik.docker.network: proxy_external
-      traefik.http.routers.memos.rule: Host(`${DOMAIN_MEMOS}`)
-      traefik.http.routers.memos.entrypoints: tunnel
-      traefik.http.routers.memos.service: memos@docker
-      traefik.http.services.memos.loadbalancer.server.port: 5230
-
-networks:
-  proxy_external:
-    external: true
+      - MEMOS_PORT=5230
+      - MEMOS_DRIVER=sqlite
+      - MEMOS_INSTANCE_URL="https://notes.34-anniesland-home.uk"
