@@ -54,25 +54,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/sonarr:/config
       - /data:/data
-  lidarr:
-    container_name: lidarr
-    hostname: lidarr.internal
-    image: ghcr.io/hotio/lidarr:latest
-    restart: unless-stopped
-    logging:
-      driver: json-file
-    ports:
-      - 8686:8686
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-      - UMASK=002
-      - WEBUI_PORTS=8686/tcp
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /docker/appdata/lidarr:/config
-      - /data:/data
   bazarr:
     container_name: bazarr
     hostname: bazarr.internal
@@ -126,35 +107,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/plex:/config
       - /data/media:/data/media
-  navidrome:
-    container_name: navidrome
-    image: deluan/navidrome:latest
-    ports:
-      - 4533:4533
-    restart: unless-stopped
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-    env_file:
-      - .env
-    volumes:
-      - /docker/appdata/navidrome:/data
-      - /data/media/music:/music:ro
-  seerr:
-    container_name: seerr
-    image: ghcr.io/hotio/seerr
-    ports:
-      - 5055:5055
-    restart: unless-stopped
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - UMASK=002
-      - TZ=Europe/London
-      - WEBUI_PORTS=5055/tcp
-    volumes:
-      - /docker/appdata/seerr:/config
   heimdall:
     container_name: heimdall
     image: lscr.io/linuxserver/heimdall:latest
