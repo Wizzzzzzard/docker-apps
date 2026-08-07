@@ -125,9 +125,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/plex:/config
-      - /data/media/tv:/tv
-      - /data/media/movies:/movies
-      - /data/media/music:/music
+      - /data/media:/data/media
   navidrome:
     container_name: navidrome
     image: deluan/navidrome:latest
