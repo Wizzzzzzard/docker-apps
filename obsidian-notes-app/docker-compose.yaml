@@ -1,0 +1,24 @@
+services:
+  obsidian-livesync:
+    container_name: obsidian-livesync
+    image: couchdb:latest
+    restart: unless-stopped
+    ports:
+      - "5984:5984"
+    shm_size: "1gb"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - COUCHDB_USER=${COUCHDB_USER}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+    env_file:
+      - .env
+    volumes:
+      - /docker/appdata/couchdb-obsidian-livesync/data:/opt/couchdb/data
+      - /docker/appdata/couchdb-obsidian-livesync/etc:/opt/couchdb/etc/local.d
+    healthcheck:
+      test: curl --fail -s -u ${COUCHDB_USER}:${COUCHDB_PASSWORD}  http://localhost:5984/_up | grep -Eo '\"status\":\"ok\"' || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
